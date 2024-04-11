@@ -13,4 +13,7 @@ public class Producto {
     private String nombreProducto;
     private double precioUnitario;
     private int unidadesStock;
+    private int categoria;
+
+
 }

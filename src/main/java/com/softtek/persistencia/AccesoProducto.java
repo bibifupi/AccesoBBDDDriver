@@ -1,29 +1,34 @@
 package com.softtek.persistencia;
 
 import com.softtek.modelo.Producto;
-
+import java.sql.*;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AccesoProducto extends Conexion {
 
     public List<Producto> obtenerTodos() throws ClassNotFoundException, SQLException {
         Statement sentencia;
         ResultSet resultado;
-        String sql = "Select product_id, product_name, unit_price, units_in_stock from products";
+        String sql = "Select product_id, product_name, unit_price, units_in_stock, category_id from products;";
         List<Producto> productos = new ArrayList<>();
         abrirConexion();
         sentencia = miConexion.createStatement();
         resultado = sentencia.executeQuery(sql);
-        while (resultado.next()) {
+        while(resultado.next()){
             productos.add(new Producto(resultado.getInt("product_id"),
                     resultado.getString("product_name"),
                     resultado.getDouble("unit_price"),
-                    resultado.getInt("units_in_stock")));
+                    resultado.getInt("units_in_stock"),
+                    resultado.getInt("category_id")));
         }
+
+        miConexion.close();
         return productos;
 
     }
@@ -40,7 +45,8 @@ public class AccesoProducto extends Conexion {
             prod = new Producto(resultado.getInt("product_id"),
                     resultado.getString("product_name"),
                     resultado.getDouble("unit_price"),
-                    resultado.getInt("units_in_stock"));
+                    resultado.getInt("units_in_stock"),
+                    resultado.getInt("category_id"));
         }
         return prod;
     }
@@ -75,4 +81,5 @@ public class AccesoProducto extends Conexion {
         sentencia.executeQuery(sql);
         return true;
     }
+
 }
