@@ -15,5 +15,4 @@ public class Producto {
     private int unidadesStock;
     private int categoria;
 
-
 }
